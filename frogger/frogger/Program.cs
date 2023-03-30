@@ -95,7 +95,7 @@ while (Raylib.WindowShouldClose() == false)//medans spelet är öppet ska hela k
 
     //grafik_________________________________________________________________________
 
-    Raylib.BeginDrawing();
+    Raylib.BeginDrawing();//påbörkar ritning
     Raylib.ClearBackground(Color.WHITE);
 
     if (currentScene == "game")
@@ -119,14 +119,14 @@ while (Raylib.WindowShouldClose() == false)//medans spelet är öppet ska hela k
         Raylib.DrawText("FROGGER", 430, 350, 36, Color.BLACK);             // ritar upp text
         Raylib.DrawText("Press ENTER to start", 350, 450, 34, Color.BLACK);
     }
-    
+
     else if (currentScene == "end")
     {
-        Raylib.ClearBackground(Color.RED);
-        Raylib.DrawText("GAME OVER", 430, 350, 36, Color.BLACK);
+        Raylib.ClearBackground(Color.RED); //röd bakgrund 
+        Raylib.DrawText("GAME OVER", 430, 350, 36, Color.BLACK);//text
         Raylib.DrawText("Press ENTER to play again", 320, 450, 34, Color.BLACK);
 
     }
 
-    Raylib.EndDrawing();
+    Raylib.EndDrawing();//avslutar ritning
 }
