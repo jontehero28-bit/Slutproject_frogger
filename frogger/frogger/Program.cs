@@ -2,23 +2,26 @@
 global using System.Numerics;
 global using System.Threading;
 
-Raylib.InitWindow(1000, 1000, "Frogger game"); //rutor där 100px X 100px. Då spelet är 10 rutor bredd och 10 lång
+Raylib.InitWindow(1000, 1000, "Frogger game"); //rutor där 100px X 100px. spelet 10 rutor bredd och lång
 Raylib.SetTargetFPS(60);
 
 Texture2D frog = Raylib.LoadTexture("frog-1.png.png"); //laddar upp frog sprite
 
 Rectangle player = new Rectangle(550, 950, frog.width, frog.height);//skapar player
 
+
 string currentScene = "start"; //start, game, end,
-float timerMaxValue = 1000;   //100 sekunder för att klara av banan
-float timerCurrentValue = 1000;
+float timerMaxValue = 100;   //100 sekunder för att klara av banan. Maxvalue är tiden när man startar
+float timerCurrentValue = 100;//nuvarande tiden
 int jump = 100; //jump ska vara en ruta stor, så 100px.
 int degrees = 0;//rotera player
+
+List<Obstacle> cars = new List<Obstacle>(); //lista för bilar
 //____________________________________________________________
 
 
 
-while (Raylib.WindowShouldClose() == false)//medans spelet är öppet ska hela koden under köras
+while (Raylib.WindowShouldClose() == false)//medans spelfönster är öppet ska hela koden under köras
 {
 
     //logik______________________________________________________
@@ -27,7 +30,7 @@ while (Raylib.WindowShouldClose() == false)//medans spelet är öppet ska hela k
     {
         if (timerCurrentValue >= 0)//timern går ner per frame tid (varje sekund)
         {
-            timerCurrentValue -= Raylib.GetFrameTime();
+            timerCurrentValue -= Raylib.GetFrameTime();//nuvarande tid kvar - framestime
         }
 
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_W) || Raylib.IsKeyPressed(KeyboardKey.KEY_UP))//up
@@ -54,7 +57,7 @@ while (Raylib.WindowShouldClose() == false)//medans spelet är öppet ska hela k
             degrees = 270;      //kolla vänster
         }
 
-        if (player.y >= 1000)      //så player skulle inte gå utanför scenen
+        if (player.y >= 1000)      //så player skulle inte gå utanför scenen i varje håll förutom upp
         {
             player.y -= jump;
         }
@@ -82,7 +85,7 @@ while (Raylib.WindowShouldClose() == false)//medans spelet är öppet ska hela k
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))//gå till scen game
         {
             currentScene = "game";  
-            timerCurrentValue = timerMaxValue;    //återställer timern
+            timerCurrentValue = timerMaxValue;    //återställer timern till maximala tiden (tid från början)
         }
     }
 
@@ -100,13 +103,7 @@ while (Raylib.WindowShouldClose() == false)//medans spelet är öppet ska hela k
 
     if (currentScene == "game")
     {
-        Raylib.ClearBackground(Color.GRAY);
-        Raylib.DrawRectangle(1, 900, 1000, 100, Color.GREEN); //grässmatta, spawn punkt
-        Raylib.DrawRectangle(1, 600, 1000, 300, Color.BLACK); //bilväg
-        Raylib.DrawRectangle(1, 500, 1000, 100, Color.GREEN); //safezone
-        Raylib.DrawRectangle(1, 300, 1000, 200, Color.BLUE); //water
-        Raylib.DrawRectangle(1, 100, 1000, 200, Color.BLACK);//bilväg
-        Raylib.DrawRectangle(1, 1, 1000, 100, Color.GREEN);//safezone
+        level1.DrawLevel1(); //metod för att rita upp level
 
         Raylib.DrawText($"Time: {(int)timerCurrentValue}", 1, 930, 40, Color.BLACK);
 
