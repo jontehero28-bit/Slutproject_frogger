@@ -19,7 +19,11 @@ int degrees = 0;//rotera player
 List<Obstacle> cars = new List<Obstacle>(); //lista för bilar
 //____________________________________________________________
 
-
+cars.Add(new(700)); //start position för första bilen Den har bara värde för carY position
+cars.Add(new(800)); //andra bilen
+cars.Add(new(600)); // tredje bilen
+cars.Add(new(100)); //fjärde bilen
+cars.Add(new(200)); //femte bilen
 
 while (Raylib.WindowShouldClose() == false)//medans spelfönster är öppet ska hela koden under köras
 {
@@ -28,7 +32,7 @@ while (Raylib.WindowShouldClose() == false)//medans spelfönster är öppet ska 
 
     if (currentScene == "game")//ifall scenen är på game då ska
     {
-        if (timerCurrentValue >= 0)//timern går ner per frame tid (varje sekund)
+        if (timerCurrentValue > 0)//timern går ner per frame tid (varje sekund)
         {
             timerCurrentValue -= Raylib.GetFrameTime();//nuvarande tid kvar - framestime
         }
@@ -70,9 +74,16 @@ while (Raylib.WindowShouldClose() == false)//medans spelfönster är öppet ska 
             player.x += jump;
         }
 
-//____________________________________________________________________________
+
+        foreach (Obstacle c in cars)
+        {
+        c.Update();
+        }
 
     }
+//____________________________________________________________________________
+
+    
     else if (currentScene == "start")//ifall scenen är på start då ska
     {
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))//går till scen game
@@ -89,7 +100,7 @@ while (Raylib.WindowShouldClose() == false)//medans spelfönster är öppet ska 
         }
     }
 
-    if (timerCurrentValue == 0)//ifall tiden är ute då ska
+    if (timerCurrentValue <= 0)//ifall tiden är ute då ska
     {
         currentScene = "end";//game over
 
@@ -108,6 +119,12 @@ while (Raylib.WindowShouldClose() == false)//medans spelfönster är öppet ska 
         Raylib.DrawText($"Time: {(int)timerCurrentValue}", 1, 930, 40, Color.BLACK);
 
         Raylib.DrawTexturePro(frog, new Rectangle(0,0,100,100), player, new Vector2(50,50), degrees, Color.WHITE);//(texture, Rectangle source, Rectangle dest, Vector2 origin, rotation, Color)
+
+        foreach (Obstacle c in cars)
+        {
+        c.Draw();
+            
+        }
 
     }
 
