@@ -11,12 +11,15 @@ Rectangle player = new Rectangle(550, 950, frog.width, frog.height);//skapar pla
 
 
 string currentScene = "start"; //start, game, end,
-float timerMaxValue = 100;   //100 sekunder för att klara av banan. Maxvalue är tiden när man startar
-float timerCurrentValue = 100;//nuvarande tiden
+float timerMaxValue = 60;   //100 sekunder för att klara av banan. Maxvalue är tiden när man startar
+float timerCurrentValue = 60;//nuvarande tiden
 int jump = 100; //jump ska vara en ruta stor, så 100px.
 int degrees = 0;//rotera player
 
 List<Obstacle> cars = new List<Obstacle>(); //lista för bilar
+
+
+
 //____________________________________________________________
 
 cars.Add(new(700)); //start position för första bilen Den har bara värde för carY position
@@ -32,6 +35,8 @@ while (Raylib.WindowShouldClose() == false)//medans spelfönster är öppet ska 
 
     if (currentScene == "game")//ifall scenen är på game då ska
     {
+
+
         if (timerCurrentValue > 0)//timern går ner per frame tid (varje sekund)
         {
             timerCurrentValue -= Raylib.GetFrameTime();//nuvarande tid kvar - framestime
@@ -74,8 +79,7 @@ while (Raylib.WindowShouldClose() == false)//medans spelfönster är öppet ska 
             player.x += jump;
         }
 
-
-        foreach (Obstacle c in cars)
+        foreach (Obstacle c in cars) //execute update metoden för (c) item
         {
         c.Update();
         }
@@ -97,17 +101,20 @@ while (Raylib.WindowShouldClose() == false)//medans spelfönster är öppet ska 
         {
             currentScene = "game";  
             timerCurrentValue = timerMaxValue;    //återställer timern till maximala tiden (tid från början)
+            player.x = 550;     //ifall game over jag tar x, y och degrees värde till samma som var från början.
+            player.y = 950;
+            degrees = 0;
         }
     }
 
     if (timerCurrentValue <= 0)//ifall tiden är ute då ska
     {
         currentScene = "end";//game over
-
     }
 
 
     //grafik_________________________________________________________________________
+
 
     Raylib.BeginDrawing();//påbörkar ritning
     Raylib.ClearBackground(Color.WHITE);
@@ -120,13 +127,12 @@ while (Raylib.WindowShouldClose() == false)//medans spelfönster är öppet ska 
 
         Raylib.DrawTexturePro(frog, new Rectangle(0,0,100,100), player, new Vector2(50,50), degrees, Color.WHITE);//(texture, Rectangle source, Rectangle dest, Vector2 origin, rotation, Color)
 
-        foreach (Obstacle c in cars)
+        foreach (Obstacle c in cars)   //execute draw metoden för (c) item
         {
         c.Draw();
-            
         }
 
-    }
+    }//___________________________________________________________________________________________
 
     else if (currentScene == "start")
     {
