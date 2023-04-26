@@ -1,12 +1,15 @@
 using System;
 
-public class Obstacle
+public class Obstacle //obstacle class
 {
     Texture2D carSprite = Raylib.LoadTexture("car-1.png.png");//laddar upp car sprite
-    
-    int carSpeed = 10;   //hastigheten för bilen
 
-    Rectangle rectCar;      //rektangel för car
+    
+    int carSpeed = 20;   //hastigheten för bilen
+
+    public Rectangle rectCar;      //rektangel för car
+    public Rectangle carCollider;   //bil collider
+    
 
     Random generator = new Random(); //random bestämmer om bilen ska komma från vänster eller höger.
     int o;      //variablen för random bil position.
@@ -23,17 +26,23 @@ public class Obstacle
 
         else if (o == 2)   //ifall obstacle är 2 då är det rectLeft
         {
-        rectCar = new Rectangle(1, carY + 60, carSprite.width, carSprite.height); //kollar vänster. carY +60 behövs för att rotationen skulle vara i mitten av spriten.
+        rectCar = new Rectangle(1, carY + 50, carSprite.width, carSprite.height); //kollar vänster. carY +60 behövs för att rotationen skulle vara i mitten av spriten.
         }
         
     }
     public void Update()
     {
-       
+        
+        carCollider.width = rectCar.width; //samma sak som för grodan, flyttar på 
+        carCollider.height = rectCar.height;
        
         
         if (o == 1) //ifall o = 1 då bilen kommer från högra sidan
         {
+
+        carCollider.x = rectCar.x;   //ändrar hitboxen för rectangeln /högra bilen
+        carCollider.y = rectCar.y;
+
         if (rectCar.x < -100 )//när den når gränsen av skärmen den teleporteras tillbaka.
         {
          rectCar.x = 1000;
@@ -44,6 +53,10 @@ public class Obstacle
 
         else if (o == 2)
         {
+
+            carCollider.x = rectCar.x - rectCar.width/2;   //ändrar hitboxen för rectangeln / vänstra bilen
+            carCollider.y = rectCar.y - rectCar.height/2;
+
         if (rectCar.x > 1100)
         {
             rectCar.x = 1;
@@ -55,14 +68,14 @@ public class Obstacle
     }
     public void Draw()//rita ut bilar.
     {
+        
         if (o == 1)   //ifall o = 1 då rita ut carRight
         {
         Raylib.DrawTexture(carSprite, (int)rectCar.x, (int)rectCar.y, Color.WHITE);//carRight
-
         }
         else if (o == 2)    // ifall o = 2 då rita ut carLeft
         {
-        Raylib.DrawTexturePro(carSprite, new Rectangle(0,0,120,120), rectCar, new Vector2(50, 50), 180, Color.WHITE);//carLeft
+        Raylib.DrawTexturePro(carSprite, new Rectangle(0,0,100,100), rectCar, new Vector2(50, 50), 180, Color.PURPLE);//carLeft
 
         }
     }

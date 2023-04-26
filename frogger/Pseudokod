@@ -3,7 +3,7 @@ Jag kommer skapa spel likt frogger eller chicken road
 Man spelar som en groda som ska hoppa till andra sidan av leveln
 som obsticalses så finns det bilar och vatten som kan döda grodan
 för att komma till andra sidan så ska spelaren undvika att bli påkörd av en bil och ramla inte i vattnet
-För att ramla inte i vattnet ska spelaren hoppa på träbitar som flytar sig.
+För att ramla inte i vattnet ska spelaren hoppa på träbitar
 
 Det är begränsat tid i spelet. Ifall tiden tar slut det blir game over.
 

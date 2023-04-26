@@ -2,6 +2,7 @@ global using System;
 
 public static class level1
 {
+
     public static void DrawLevel1() //gjorde denna klassen för att spara lite på rader kod och flytta kod upprepelse hittåt
     {
         Raylib.ClearBackground(Color.GRAY);
