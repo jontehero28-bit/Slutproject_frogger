@@ -13,6 +13,9 @@ public static class level1
         Raylib.DrawRectangle(1, 100, 1000, 200, Color.BLACK);//bilväg
         Raylib.DrawRectangle(1, 1, 1000, 100, Color.GREEN);//safezone
 
+        
+
        
     }
+    
 }
