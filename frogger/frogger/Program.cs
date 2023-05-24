@@ -29,10 +29,11 @@ List<Water> waters = spawnwater(); //lista för vatten rectangel där jag skapar
 
 //________________________________________________________________________________________________
 
-while (true)//medans while är true ska hela koden under köras
+while ((true) && (!Raylib.WindowShouldClose()))//medans while är true ska hela koden under köras
 {
-    
+
     //logik______________________________________________________
+
 
 
     if (currentScene == "game")//ifall scenen är på game då ska
@@ -92,6 +93,9 @@ while (true)//medans while är true ska hela koden under köras
 
     Raylib.EndDrawing();//avslutar ritning
 }
+
+
+
 static List<Obstacle> spawncars()
 {
     List<Obstacle> cars = new();
@@ -168,12 +172,10 @@ static void scences(string currentScene, float timerCurrentValue, int degrees, L
     }
 }
 
+//------------------------------------------------------------------------
+
 static void frogMove(Rectangle player, int jump, int degrees, Rectangle frogCollider, string currentScene, float timerCurrentValue)
 {
-    if (currentScene == "game")//ifall scenen är på game då ska
-    {
-
-
         if (timerCurrentValue > 0)//timern går ner per frame tid (varje sekund)
         {
             timerCurrentValue -= Raylib.GetFrameTime();//nuvarande tid kvar - framestime
@@ -226,8 +228,8 @@ static void frogMove(Rectangle player, int jump, int degrees, Rectangle frogColl
             currentScene = "win";
         }
 
-    }
 }
+
 static void collisions(List<Obstacle> cars, List<Water> waters, Rectangle frogCollider, string currentScene)
 {
     foreach (Obstacle c in cars) //execute update metoden för (c) item
