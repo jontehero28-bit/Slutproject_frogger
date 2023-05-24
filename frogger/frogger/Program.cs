@@ -73,6 +73,7 @@ while ((true) && (!Raylib.WindowShouldClose()))//medans while är true ska hela 
     {
         currentScene = "end";//game over
     }
+   
 
     //grafik_________________________________________________________________________
 
@@ -275,4 +276,13 @@ static (string, float, float, Rectangle, int) winMethod(string currentScene, flo
         }
 
         return (currentScene, timerCurrentValue, timerMaxValue, player, degrees);
+}
+//gör så att koden är återanvändbar.
+ bool IsEven(int value)
+{
+    if (value % 2 == 0)
+    {
+        return true;
+    }
+    return false;
 }
