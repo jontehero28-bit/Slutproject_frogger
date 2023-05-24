@@ -38,8 +38,9 @@ while ((true) && (!Raylib.WindowShouldClose()))//medans while är true ska hela 
 
     if (currentScene == "game")//ifall scenen är på game då ska
     {
-        frogMove(player, jump, degrees, frogCollider, currentScene, timerCurrentValue); //här använder jag frog metod
-        collisions(cars, waters, frogCollider, currentScene); //kollisioner för spelaren och bilar och vatten.
+        (player, frogCollider, currentScene, degrees) = frogMove(player, jump, degrees, frogCollider, currentScene); //här använder jag frog metod
+        (cars, waters, frogCollider, currentScene) = collisions(cars, waters, frogCollider, currentScene); //kollisioner för spelaren och bilar och vatten.
+        (timerCurrentValue) = timer(timerCurrentValue); //metoden för min timer.
 
     }
     //____________________________________________________________________________
@@ -57,25 +58,15 @@ while ((true) && (!Raylib.WindowShouldClose()))//medans while är true ska hela 
     {
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))//gå till scen game
         {
-            currentScene = "game";
-            timerCurrentValue = timerMaxValue;    //återställer timern till maximala tiden (tid från början)
-            player.x = 550;     //ifall game over jag tar x, y och degrees värde till samma som var från början.
-            player.y = 950;
-            degrees = 0;
+            (currentScene, timerCurrentValue, timerMaxValue, player, degrees) = endMethod(currentScene, timerCurrentValue, timerMaxValue, player, degrees);
             
         }
     }
 
     else if (currentScene == "win")
     {
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))//gå till start
-        {
-            currentScene = "start";
-            timerCurrentValue = timerMaxValue;    //återställer timern till maximala tiden (tid från början)
-            player.x = 550;     //ifall game over jag tar x, y och degrees värde till samma som var från början.
-            player.y = 950;
-            degrees = 0;
-        }
+        (currentScene, timerCurrentValue, timerMaxValue, player, degrees) = winMethod(currentScene, timerCurrentValue, timerMaxValue, player, degrees);
+
     }
 
     if (timerCurrentValue <= 0)//ifall tiden är ute då ska
@@ -94,7 +85,7 @@ while ((true) && (!Raylib.WindowShouldClose()))//medans while är true ska hela 
     Raylib.EndDrawing();//avslutar ritning
 }
 
-
+//---------------------------------------------------------------------------------bara metoder under det
 
 static List<Obstacle> spawncars()
 {
@@ -174,12 +165,8 @@ static void scences(string currentScene, float timerCurrentValue, int degrees, L
 
 //------------------------------------------------------------------------
 
-static void frogMove(Rectangle player, int jump, int degrees, Rectangle frogCollider, string currentScene, float timerCurrentValue)
+static (Rectangle, Rectangle, string, int) frogMove(Rectangle player, int jump, int degrees, Rectangle frogCollider, string currentScene)
 {
-        if (timerCurrentValue > 0)//timern går ner per frame tid (varje sekund)
-        {
-            timerCurrentValue -= Raylib.GetFrameTime();//nuvarande tid kvar - framestime
-        }
 
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_W) || Raylib.IsKeyPressed(KeyboardKey.KEY_UP))//up
         {
@@ -228,9 +215,21 @@ static void frogMove(Rectangle player, int jump, int degrees, Rectangle frogColl
             currentScene = "win";
         }
 
+    return (player, frogCollider, currentScene, degrees);
+
 }
 
-static void collisions(List<Obstacle> cars, List<Water> waters, Rectangle frogCollider, string currentScene)
+static float timer(float timerCurrentValue)
+{
+    if (timerCurrentValue > 0)//timern går ner per frame tid (varje sekund)
+        {
+            timerCurrentValue -= Raylib.GetFrameTime();//nuvarande tid kvar - framestime
+        }
+
+        return timerCurrentValue;
+}
+
+static (List<Obstacle>, List<Water>, Rectangle, string) collisions(List<Obstacle> cars, List<Water> waters, Rectangle frogCollider, string currentScene)
 {
     foreach (Obstacle c in cars) //execute update metoden för (c) item
         {
@@ -249,4 +248,31 @@ static void collisions(List<Obstacle> cars, List<Water> waters, Rectangle frogCo
                 currentScene = "end";     //game over
             }
         }
-} //jag vet att det funkar inte riktigt som den ska, jag kommer på måndag o fixar det.
+
+        return (cars, waters, frogCollider, currentScene);
+} 
+
+static (string, float, float, Rectangle, int) endMethod(string currentScene, float timerCurrentValue, float timerMaxValue, Rectangle player, int degrees)
+{
+    currentScene = "game";
+            timerCurrentValue = timerMaxValue;    //återställer timern till maximala tiden (tid från början)
+            player.x = 550;     //ifall game over jag tar x, y och degrees värde till samma som var från början.
+            player.y = 950;
+            degrees = 0;
+
+            return (currentScene, timerCurrentValue, timerMaxValue, player, degrees);
+}
+
+static (string, float, float, Rectangle, int) winMethod(string currentScene, float timerCurrentValue, float timerMaxValue, Rectangle player, int degrees)
+{
+    if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))//gå till start
+        {
+            currentScene = "start";
+            timerCurrentValue = timerMaxValue;    //återställer timern till maximala tiden (tid från början)
+            player.x = 550;     //ifall game over jag tar x, y och degrees värde till samma som var från början.
+            player.y = 950;
+            degrees = 0;
+        }
+
+        return (currentScene, timerCurrentValue, timerMaxValue, player, degrees);
+}
